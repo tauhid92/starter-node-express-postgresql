@@ -6,7 +6,7 @@ const products = knex("products");
 const getAllProducts = () => products.select("*");
 
 //const getProductById = productId =>
-products.select("*").where({ product_id: productId }).first();
+//products.select("*").where({ product_id: productId }).first();
 
 const getOutOfStockCount = () =>
   products
