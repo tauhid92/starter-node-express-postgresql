@@ -1,5 +1,7 @@
 const ProductsService = require("./products.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const treeize = require("../utils/treeize");
+
 
 async function productExists(req, res, next) {
   const error = { status: 404, message: `Product cannot be found.` };
@@ -7,7 +9,10 @@ async function productExists(req, res, next) {
   const { productId } = req.params;
   if (!productId) return next(error);
 
-  const product = await ProductsService.getProductById(productId);
+  let product = await ProductsService.getProductById(productId);
+
+  product = treeize(product);
+  if (product instanceof Error) return next({ message: product.message });
 
   if (!product) return next(error);
   res.locals.product = product;
